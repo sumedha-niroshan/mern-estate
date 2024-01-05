@@ -1,7 +1,8 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
+import { errorHandler } from "../Utils/error.js";
 
-export const authController = async (req, res) => {
+export const authController = async (req, res, next) => {
   const { username, email, password } = req.body;
   const hashPassword = bcrypt.hashSync(password, 10);
   const newUser = new User({ username, email, password: hashPassword });
@@ -9,6 +10,6 @@ export const authController = async (req, res) => {
     await newUser.save();
     res.status(201).json("User created succesfully");
   } catch (error) {
-    res.status(500).json(error.message);
+    next(errorHandler(500, "Functional error"));
   }
 };
