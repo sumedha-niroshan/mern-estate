@@ -6,6 +6,7 @@ import userRouter from "./routers/user.router.js";
 import authRouter from "./routers/Auth.router.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import listingRouter from "./routers/listing.route.js";
 
 mongoose
   .connect(process.env.MONGO)
@@ -29,6 +30,7 @@ app.listen(3000, () => {
 
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/listing", listingRouter);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
