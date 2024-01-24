@@ -11,19 +11,21 @@ import {
   updateInStart,
   updateInSuccess,
   updateInFailure,
+  deleteUserFailure,
+  deleteUserStart,
+  deleteUserSuccess,
 } from "../Redux/User/userSlice";
 import { useDispatch } from "react-redux";
-import { updateUser } from "../../../api/controllers/user.controller";
 
 const Profile = () => {
-  const { currentUser , loading , error } = useSelector((state) => state.user);
+  const { currentUser, loading, error } = useSelector((state) => state.user);
   const fileRef = useRef(null);
   const dispatch = useDispatch();
   const [file, setFile] = useState(undefined);
   const [filePerc, setFilePer] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({});
-  const [userUpdateSuccess , setUserUpdateSuccess] = useState(false);
+  const [userUpdateSuccess, setUserUpdateSuccess] = useState(false);
 
   useEffect(() => {
     if (file) {
@@ -77,9 +79,25 @@ const Profile = () => {
       }
 
       dispatch(updateInSuccess(data));
-      setUserUpdateSuccess(true)
+      setUserUpdateSuccess(true);
     } catch (error) {
       dispatch(updateInFailure(error.message));
+    }
+  };
+
+  const handleDeleteUser = async () => {
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if ((data.success === false)) {
+        dispatch(deleteUserFailure(data.message));
+      }
+      dispatch(deleteUserSuccess(data));
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
     }
   };
 
@@ -134,16 +152,21 @@ const Profile = () => {
           className="border p-3 rounded-lg"
           onChange={handleChange}
         />
-        <button disabled={loading} className="bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80">
-         {loading ? "Loading..." : "Update"}
+        <button
+          disabled={loading}
+          className="bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80"
+        >
+          {loading ? "Loading..." : "Update"}
         </button>
       </form>
-      <div className="flex justify-between mt-5">
+      <div onClick={handleDeleteUser} className="flex justify-between mt-5">
         <span className="text-red-700 cursor-pointer">Delete account</span>
         <span className="text-red-700 cursor-pointer">Sign out</span>
       </div>
-      <p className="text-red-700 mt-5">{error ? error :''}</p>
-      <p className="text-green-700 mt-2">{userUpdateSuccess ? "User Update Successfully" : ""}</p>
+      <p className="text-red-700 mt-5">{error ? error : ""}</p>
+      <p className="text-green-700 mt-2">
+        {userUpdateSuccess ? "User Update Successfully" : ""}
+      </p>
     </div>
   );
 };
