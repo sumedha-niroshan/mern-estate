@@ -32,6 +32,7 @@ const Profile = () => {
   const [userUpdateSuccess, setUserUpdateSuccess] = useState(false);
   const [showListingError, setShowListingError] = useState(false);
   const [userListing, setUserListing] = useState([]);
+  const [deleteListingError, setDeleteListingError] = useState(false);
 
   useEffect(() => {
     if (file) {
@@ -135,6 +136,24 @@ const Profile = () => {
       setUserListing(data);
     } catch (error) {
       setShowListingError(error.message);
+    }
+  };
+
+  const handleListingDelete = async (listingId) => {
+    try {
+      const res = await fetch(`/api/listing/delete/${listingId}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        return setDeleteListingError(true);
+      }
+
+      setUserListing((prev) =>
+        prev.filter((listing) => listing._id !== listingId)
+      );
+    } catch (error) {
+      setDeleteListingError(error.message);
     }
   };
 
@@ -248,7 +267,12 @@ const Profile = () => {
                 <p>{listing.name}</p>
               </Link>
               <div className="flex flex-col items-center">
-                <button className="text-red-700 uppercase">Delete</button>
+                <button
+                  onClick={() => handleListingDelete(listing._id)}
+                  className="text-red-700 uppercase"
+                >
+                  Delete
+                </button>
                 <button className="text-green-700 uppercase">Edit</button>
               </div>
             </div>
