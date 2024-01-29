@@ -82,7 +82,7 @@ export default function Listing() {
               </p>
               {listing.offer && (
                 <p className="text-white   uppercase bg-green-700  text-lg p-3 text-center max-w-[200px] rounded-lg w-full">
-                  $ {+listing.regularPrice - listing.discountPrice}
+                  $ {+listing.regularPrice - listing.discountPrice} off
                 </p>
               )}
             </div>
