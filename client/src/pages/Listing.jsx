@@ -10,6 +10,8 @@ import { FaBed } from "react-icons/fa6";
 import { FaBath } from "react-icons/fa6";
 import { FaParking } from "react-icons/fa";
 import { MdChair } from "react-icons/md";
+import { useSelector } from "react-redux";
+import Contac from "../components/Contac";
 
 export default function Listing() {
   SwiperCore.use([Navigation]);
@@ -17,6 +19,8 @@ export default function Listing() {
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const { currentUser } = useSelector((state) => state.user);
+  const [contac, setContac] = useState(false);
 
   useEffect(() => {
     const fetchListing = async () => {
@@ -63,7 +67,7 @@ export default function Listing() {
               </SwiperSlide>
             ))}
           </Swiper>
-          <div className="max-w-[550px] mx-auto mt-7 gap-8">
+          <div className="max-w-[650px] mx-auto mt-7 m-7 gap-8">
             <h1 className="text-2xl font-semibold my-3 ">
               {listing.name} - ${listing.regularPrice} Per Month
             </h1>
@@ -112,6 +116,12 @@ export default function Listing() {
                 {listing.furnished ? "Furnished" : "No Furnished "}
               </li>
             </ul>
+            {currentUser && listing.useRef !== currentUser._id && !contac && (
+              <button onClick={()=>setContac(true)} className="bg-slate-700 text-white rounded-md uppercase hover:opacity-90 w-full p-3 mt-3">
+                Contact landload
+              </button>
+            )}
+            {contac && <Contac listing={listing}/>}
           </div>
         </div>
       )}
