@@ -22,46 +22,58 @@ const userSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     },
-    updateInStart: (state)=>{
+    updateInStart: (state) => {
       state.loading = true;
     },
-    updateInSuccess:(state , action) =>{
+    updateInSuccess: (state, action) => {
       state.currentUser = action.payload;
       state.loading = false;
       state.error = null;
     },
-    updateInFailure:(state , action)=>{
+    updateInFailure: (state, action) => {
       state.error = action.payload;
       state.loading = false;
     },
-    deleteUserStart:(state) => {
+    deleteUserStart: (state) => {
       state.loading = true;
     },
-    deleteUserSuccess:(state)=>{
+    deleteUserSuccess: (state) => {
       state.currentUser = null;
       state.loading = false;
-      state.error = null
+      state.error = null;
     },
-    deleteUserFailure:(state , action) =>{
+    deleteUserFailure: (state, action) => {
       state.error = action.payload;
-      state.loading = false
+      state.loading = false;
     },
-    signoutUserStart:(state) => {
+    signoutUserStart: (state) => {
       state.loading = true;
     },
-    signoutUserSuccess:(state)=>{
+    signoutUserSuccess: (state) => {
       state.currentUser = null;
       state.loading = false;
-      state.error = null
+      state.error = null;
     },
-    signoutUserFailure:(state , action) =>{
+    signoutUserFailure: (state, action) => {
       state.error = action.payload;
-      state.loading = false
-    }
-
+      state.loading = false;
+    },
   },
 });
 
-export const { signInStart, signInFailure, signInSuccess, updateInStart, updateInSuccess  , updateInFailure , deleteUserFailure , deleteUserStart , deleteUserSuccess, signoutUserFailure , signoutUserStart ,signoutUserSuccess } = userSlice.actions;
+export const {
+  signInStart,
+  signInFailure,
+  signInSuccess,
+  updateInStart,
+  updateInSuccess,
+  updateInFailure,
+  deleteUserFailure,
+  deleteUserStart,
+  deleteUserSuccess,
+  signoutUserFailure,
+  signoutUserStart,
+  signoutUserSuccess,
+} = userSlice.actions;
 
 export default userSlice.reducer;
