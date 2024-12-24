@@ -27,7 +27,6 @@ const About = () => {
         Estate and transform the way you shop. Explore, indulge, and find the
         perfect match for your needs. Your next great discovery awaits!
       </p>
-      <p className="text-slate-700">And this project for testing</p>
     </div>
   );
 };
